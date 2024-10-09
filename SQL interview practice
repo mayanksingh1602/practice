@@ -1,1 +1,54 @@
+HackerRank- Students and Grades
+    with cte as (
+    select s.Name as name, g.Grade as grade, s.Marks as marks
+    from Students s
+    left join Grades g
+    on s.Marks between g.Min_Mark and g.Max_Mark
+    order by g.Grade desc, s.Name)
+    select (case when grade>=8 then name else null end), grade,marks
+    from cte;
+-------------------------------------------------------------------------
+HackerRank- Ron's Wand 
+    select w.id, wp.age, w.coins_needed, w.power 
+    from Wands w
+    left join Wands_Property wp on w.code = wp.code
+    where wp.is_evil = 0
+    and w.coins_needed = (select min(w1.coins_needed) from Wands w1 
+    inner join Wands_Property wp1 
+    on w1.code = wp1.code where w.power = w1.power and wp.age=wp1.age)
+    order by w.power desc, wp.age desc;
+-------------------------------------------------------------------------
+HackerRank- Binary Node
+    select n,(
+    case 
+    when p is null then 'Root'
+    when n in (select distinct p from BST) then 'Inner'
+    else 'Leaf'
+    end)
+    from BST
+    order by n;
+-------------------------------------------------------------------------
+HackerRank - New Companies
+    select c.company_code, c.founder, count(distinct em.lead_manager_code), count(distinct em.senior_manager_code),count(distinct em.manager_code), count(distinct em.employee_code)
+    from Company c
+    left join Employee em on c.company_code = em.company_code
+    group by c.company_code,c.founder
+    order by c.company_code;
+-------------------------------------------------------------------------
+HackerRank - Weather Observation 20
+    with cte as 
+    (
+    select LAT_N,
+    row_number() over(order by LAT_N asc) as a1,
+    row_number() over(order by LAT_N desc) as a2
+    from STATION)
+    
+    select round(avg(LAT_N),4) 
+    from cte where a1=a2 or a1 = a2+1 or a1+1 =a2;
+-------------------------------------------------------------------------
 
+-------------------------------------------------------------------------
+-------------------------------------------------------------------------
+-------------------------------------------------------------------------
+-------------------------------------------------------------------------
+-------------------------------------------------------------------------
