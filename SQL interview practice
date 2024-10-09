@@ -46,8 +46,15 @@ HackerRank - Weather Observation 20
     select round(avg(LAT_N),4) 
     from cte where a1=a2 or a1 = a2+1 or a1+1 =a2;
 -------------------------------------------------------------------------
-
+HackerRank - Contest Leaderboard
+        select h.hacker_id, h.name, sum(max_score) as tot from
+        (select hacker_id,challenge_id,max(score) as max_score from Submissions group by hacker_id,challenge_id) as s
+        join hackers h on s.hacker_id=h.hacker_id 
+        group by hacker_id,h.name
+        having tot>0
+        order by tot desc,hacker_id;
 -------------------------------------------------------------------------
+HackerRank - 
 -------------------------------------------------------------------------
 -------------------------------------------------------------------------
 -------------------------------------------------------------------------
