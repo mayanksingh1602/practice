@@ -1,4 +1,4 @@
-HackerRank- Students and Grades
+1. HackerRank- Students and Grades
     with cte as (
     select s.Name as name, g.Grade as grade, s.Marks as marks
     from Students s
@@ -8,7 +8,7 @@ HackerRank- Students and Grades
     select (case when grade>=8 then name else null end), grade,marks
     from cte;
 -------------------------------------------------------------------------
-HackerRank- Ron's Wand 
+2. HackerRank- Ron's Wand 
     select w.id, wp.age, w.coins_needed, w.power 
     from Wands w
     left join Wands_Property wp on w.code = wp.code
@@ -18,7 +18,7 @@ HackerRank- Ron's Wand
     on w1.code = wp1.code where w.power = w1.power and wp.age=wp1.age)
     order by w.power desc, wp.age desc;
 -------------------------------------------------------------------------
-HackerRank- Binary Node
+3. HackerRank- Binary Node
     select n,(
     case 
     when p is null then 'Root'
@@ -28,14 +28,14 @@ HackerRank- Binary Node
     from BST
     order by n;
 -------------------------------------------------------------------------
-HackerRank - New Companies
+4. HackerRank - New Companies
     select c.company_code, c.founder, count(distinct em.lead_manager_code), count(distinct em.senior_manager_code),count(distinct em.manager_code), count(distinct em.employee_code)
     from Company c
     left join Employee em on c.company_code = em.company_code
     group by c.company_code,c.founder
     order by c.company_code;
 -------------------------------------------------------------------------
-HackerRank - Weather Observation 20
+5. HackerRank - Weather Observation 20
     with cte as 
     (
     select LAT_N,
@@ -46,7 +46,7 @@ HackerRank - Weather Observation 20
     select round(avg(LAT_N),4) 
     from cte where a1=a2 or a1 = a2+1 or a1+1 =a2;
 -------------------------------------------------------------------------
-HackerRank - Contest Leaderboard
+6. HackerRank - Contest Leaderboard
         select h.hacker_id, h.name, sum(max_score) as tot from
         (select hacker_id,challenge_id,max(score) as max_score from Submissions group by hacker_id,challenge_id) as s
         join hackers h on s.hacker_id=h.hacker_id 
@@ -54,8 +54,32 @@ HackerRank - Contest Leaderboard
         having tot>0
         order by tot desc,hacker_id;
 -------------------------------------------------------------------------
-HackerRank - 
+7. HackerRank - SQL Project Planning?? Challenges?? Top Competitors??
 -------------------------------------------------------------------------
+8. DataLemur - Uber 3rd Transactions
+        with uber as (
+        select *,
+        row_number() OVER(PARTITION BY user_id ORDER BY transaction_date) as rn
+        from transactions)
+        
+        SELECT user_id,spend, transaction_date
+        FROM uber
+        where rn =3
+        ORDER BY user_id,transaction_date;
 -------------------------------------------------------------------------
+9. Data Lemur - FAANG 2nd highest sal
+        /*select max(salary) as second_highest_salary
+        from employee
+        where salary not in (select max(salary) from employee);*/
+        
+        with cte as (
+        select *,
+        dense_rank() OVER( ORDER BY salary DESC) as sec_high
+        from employee)
+        
+        select salary as second_highest_salary
+        from cte 
+        where sec_high =2;
 -------------------------------------------------------------------------
+
 -------------------------------------------------------------------------
