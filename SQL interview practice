@@ -1,3 +1,6 @@
+-------------------------------------------------------------------------
+Day - 1 (9 oct)
+-------------------------------------------------------------------------
 1. HackerRank- Students and Grades
     with cte as (
     select s.Name as name, g.Grade as grade, s.Marks as marks
@@ -81,5 +84,73 @@
         from cte 
         where sec_high =2;
 -------------------------------------------------------------------------
+Day - 2 (10 Oct)
+-------------------------------------------------------------------------
+10. LeetCode - Manager with 5 direct reports
+        select name
+        from Employee
+        where id in 
+        (select managerId from Employee group by managerId having count(*)>=5);
+-------------------------------------------------------------------------
+11. LeetCode- Confirmation Rate (discussion)
+        select s.user_id, round(avg(if(c.action = 'confirmed',1,0)),2) as confirmation_rate 
+        from Signups s
+        left join Confirmations c on s.user_id = c.user_id 
+        group by s.user_id;
+-------------------------------------------------------------------------
+12. LeetCode - Monhly Transactions I
+        select left(trans_date,7) as month, country, count(state) as trans_count, sum(state ='approved') as approved_count,
+        sum(amount) as trans_total_amount, sum((state='approved')*amount) as approved_total_amount
+        from Transactions
+        group by month, country;
+-------------------------------------------------------------------------
+13. LeetCode - Immediate Food Delivery II (discussion)
+        select round(avg(order_date = customer_pref_delivery_date)*100,2) as immediate_percentage
+        from Delivery
+        where (customer_id, order_date) in (
+        select customer_id, min(order_date)
+        from Delivery
+        group by customer_id
+);
+-------------------------------------------------------------------------
+14. Data Lemur - Top 3 Salaries
+        WITH ranked_salary AS (
+          SELECT name, salary,department_id,
+            DENSE_RANK() OVER (PARTITION BY department_id ORDER BY salary DESC) AS ranking
+          FROM employee
+        )
+        
+        SELECT 
+          d.department_name,
+          s.name,
+          s.salary
+        FROM ranked_salary AS s
+        INNER JOIN department AS d
+          ON s.department_id = d.department_id
+        WHERE s.ranking <= 3
+        ORDER BY d.department_name ASC, s.salary DESC, s.name ASC;
+        
 
 -------------------------------------------------------------------------
+15. LeetCode - Customers bought all products
+        select customer_id
+        from Customer
+        group by customer_id
+        having count(distinct product_key) = (select count(product_key) from Product);
+-------------------------------------------------------------------------
+    16. LeetCode - Last person to fit in bus
+    with cte as (
+        select person_name, sum(weight) over(order by turn ) as total_weight
+        from Queue
+    )
+    
+    select person_name
+    from cte
+    where total_weight <= 1000 
+    order by total_weight desc
+    limit 1;
+-------------------------------------------------------------------------
+
+-------------------------------------------------------------------------
+-------------------------------------------------------------------------
+
